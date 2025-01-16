@@ -1,5 +1,7 @@
 const docs = document.querySelector(".docs");
 const searchInput = document.querySelector("#searchInput");
+const toast = document.querySelector(".toast");
+const clearBtn = document.querySelector(".clearBtn");
 
 // --------------------------------------
 
@@ -231,7 +233,6 @@ docs.addEventListener("click", () => {
 });
 
 /* 토스트 */
-const toast = document.querySelector(".toast");
 function openToast(text) {
   toast.style.display = "block";
   toast.querySelector("span").textContent = text;
@@ -239,3 +240,9 @@ function openToast(text) {
     toast.style.display = "none";
   }, 2000);
 }
+
+/* 입력창 지우기 */
+clearBtn.addEventListener("click", () => {
+  searchInput.value = "";
+  searchInput.focus();
+});
