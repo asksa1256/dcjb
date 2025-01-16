@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>대충 족보</title>
+    <link
+      rel="stylesheet"
+      as="style"
+      crossorigin
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <select name="ctg" id="ctg">
+          <option value="0" disabled selected>게임선택</option>
+          <option value="1">OX/XO</option>
+          <option value="2">올라/꼬로록</option>
+          <option value="3">꽁꽁</option>
+          <option value="4">가로세로</option>
+        </select>
+        <h2>검색</h2>
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="텍스트를 입력해주세요."
+        />
+      </header>
+      <div>
+        <p class="docs">
+          <span></span>
+        </p>
+      </div>
+    </div>
+    <div class="toast">답 복사: <span></span></div>
+  </body>
+  <script src="./script.js"></script>
+</html>
