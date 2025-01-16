@@ -34,18 +34,6 @@ function combine(cho, jung, jong) {
 }
 
 // 초성검색
-// function makeRegexByCho(search) {
-//   const regex = CHO_HANGUL.reduce(
-//     (acc, cho, index) =>
-//       acc.replace(
-//         new RegExp(cho, "g"),
-//         `[${combine(index, 0, 0)}-${combine(index + 1, 0, -1)}]`
-//       ),
-//     search
-//   );
-
-//   return new RegExp(`(${regex})`, "g");
-// }
 function makeRegexByCho(search = []) {
   const regexArray = search.map((s) => {
     return CHO_HANGUL.reduce(
@@ -163,6 +151,8 @@ ctg.addEventListener("change", (e) => {
 
 function _events() {
   const search = searchInput.value.trim().split(" ");
+  if (search.length === 1 && search[0] === "") return;
+
   const regex = makeRegexByCho(search);
   const selectedOption =
     document.getElementById("ctg").selectedOptions[0].value;
@@ -187,8 +177,9 @@ function _events() {
     }
   });
 
-  document.querySelector(".docs span").innerHTML =
-    search.length > 0 ? htmlDummy : "검색 결과가 없습니다.";
+  document.querySelector(".docs span").innerHTML = search
+    ? htmlDummy
+    : "검색 결과가 없습니다.";
 }
 
 function debounce(func, wait) {
