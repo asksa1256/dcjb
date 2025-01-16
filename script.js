@@ -218,16 +218,16 @@ function debounce(func, wait) {
 searchInput.addEventListener("input", debounce(_events, 500));
 
 /* 클릭 답 복사 */
-docs.addEventListener("click", (e) => {
-  let copiedAnswer;
-  if (e.target && e.target.nodeName === "SPAN") {
-    copiedAnswer = e.target
+docs.addEventListener("click", () => {
+  const target = event.target.closest(".item");
+  if (target) {
+    const answer = target
       .querySelector(".answer")
       .textContent.replace(/[()A.]/g, "")
       .trim();
+    navigator.clipboard.writeText(answer);
+    openToast(answer);
   }
-  navigator.clipboard.writeText(copiedAnswer);
-  openToast(copiedAnswer);
 });
 
 /* 토스트 */
