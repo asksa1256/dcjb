@@ -1,58 +1,6 @@
 const docs = document.querySelector(".docs");
 const searchInput = document.querySelector("#searchInput");
 
-const CHO_HANGUL = [
-  "ㄱ",
-  "ㄲ",
-  "ㄴ",
-  "ㄷ",
-  "ㄸ",
-  "ㄹ",
-  "ㅁ",
-  "ㅂ",
-  "ㅃ",
-  "ㅅ",
-  "ㅆ",
-  "ㅇ",
-  "ㅈ",
-  "ㅉ",
-  "ㅊ",
-  "ㅋ",
-  "ㅌ",
-  "ㅍ",
-  "ㅎ",
-];
-
-const HANGUL_START_CHARCODE = "가".charCodeAt();
-const CHO_PERIOD = Math.floor("까".charCodeAt() - "가".charCodeAt());
-const JUNG_PERIOD = Math.floor("개".charCodeAt() - "가".charCodeAt());
-
-function combine(cho, jung, jong) {
-  return String.fromCharCode(
-    HANGUL_START_CHARCODE + cho * CHO_PERIOD + jung * JUNG_PERIOD + jong
-  );
-}
-
-// 초성검색
-function makeRegexByCho(search = []) {
-  const regexArray = search.map((s) => {
-    return CHO_HANGUL.reduce(
-      (acc, cho, index) =>
-        acc.replace(
-          new RegExp(cho, "g"),
-          `[${combine(index, 0, 0)}-${combine(index + 1, 0, -1)}]`
-        ),
-      s
-    );
-  }); // 배열의 각 요소에 대해 정규식 작업 수행 후 조합
-  const regex = regexArray.join(".*");
-  return new RegExp(`(${regex})`, "g");
-}
-
-function includeByCho(search, targetWord) {
-  return makeRegexByCho(search).test(targetWord);
-}
-
 // --------------------------------------
 
 let oxData = new Set();
@@ -149,9 +97,66 @@ ctg.addEventListener("change", (e) => {
   fetchData(e.target.value);
 });
 
+// --------------------------------------
+
+const CHO_HANGUL = [
+  "ㄱ",
+  "ㄲ",
+  "ㄴ",
+  "ㄷ",
+  "ㄸ",
+  "ㄹ",
+  "ㅁ",
+  "ㅂ",
+  "ㅃ",
+  "ㅅ",
+  "ㅆ",
+  "ㅇ",
+  "ㅈ",
+  "ㅉ",
+  "ㅊ",
+  "ㅋ",
+  "ㅌ",
+  "ㅍ",
+  "ㅎ",
+];
+
+const HANGUL_START_CHARCODE = "가".charCodeAt();
+const CHO_PERIOD = Math.floor("까".charCodeAt() - "가".charCodeAt());
+const JUNG_PERIOD = Math.floor("개".charCodeAt() - "가".charCodeAt());
+
+function combine(cho, jung, jong) {
+  return String.fromCharCode(
+    HANGUL_START_CHARCODE + cho * CHO_PERIOD + jung * JUNG_PERIOD + jong
+  );
+}
+
+// 초성검색
+function makeRegexByCho(search = []) {
+  const regexArray = search.map((s) => {
+    return CHO_HANGUL.reduce(
+      (acc, cho, index) =>
+        acc.replace(
+          new RegExp(cho, "g"),
+          `[${combine(index, 0, 0)}-${combine(index + 1, 0, -1)}]`
+        ),
+      s
+    );
+  });
+
+  const regex = regexArray.map((r) => `(?=.*${r})`).join("");
+  return new RegExp(`(${regex})`, "g");
+}
+
+function includeByCho(search, targetWord) {
+  return makeRegexByCho(search).test(targetWord);
+}
+
+// --------------------------------------
+
 function _events() {
   const search = searchInput.value.trim().split(" ");
-  if (search.length === 1 && search[0] === "") return;
+  if (search.length < 2 && search[0] === "") return;
 
   const regex = makeRegexByCho(search);
   const selectedOption =
