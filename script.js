@@ -152,6 +152,25 @@ function includeByCho(search, targetWord) {
   return makeRegexByCho(search).test(targetWord);
 }
 
+function highlightMatches(text, search) {
+  let highlightedText = text;
+  search.forEach((term) => {
+    const regex = new RegExp(
+      `(${CHO_HANGUL.reduce(
+        (acc, cho, index) =>
+          acc.replace(
+            new RegExp(cho, "g"),
+            `[${combine(index, 0, 0)}-${combine(index + 1, 0, -1)}]`
+          ),
+        term
+      )})`,
+      "g"
+    );
+    highlightedText = highlightedText.replace(regex, "<mark>$1</mark>");
+  });
+  return highlightedText;
+}
+
 // --------------------------------------
 
 function _events() {
@@ -174,11 +193,12 @@ function _events() {
 
   list.forEach((item) => {
     if (regex.test(item.question)) {
-      htmlDummy += `
-      <span class='item'>
-        Q. ${item.question.replace(regex, "<mark>$1</mark>")}
-        <span class='answer'>A. ${item.answer}</span>
-      </span>`;
+      const highlightedQuestion = highlightMatches(item.question, search);
+
+      htmlDummy += ` <span class='item'> 
+          Q. ${highlightedQuestion} 
+          <span class='answer'>A. ${item.answer}</span> 
+        </span>`;
     }
   });
 
