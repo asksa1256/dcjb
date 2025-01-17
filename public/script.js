@@ -247,6 +247,7 @@ clearBtn.addEventListener("click", () => {
   searchInput.focus();
 });
 
+/* 서버 연동 테스트용 코드 */
 document.addEventListener("DOMContentLoaded", () => {
   fetch("/log")
     .then((response) => response.text())
