@@ -246,3 +246,11 @@ clearBtn.addEventListener("click", () => {
   searchInput.value = "";
   searchInput.focus();
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  fetch("/log")
+    .then((response) => response.text())
+    .then((message) => {
+      document.getElementById("message").innerText = message;
+    });
+});
