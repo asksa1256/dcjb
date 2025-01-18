@@ -246,6 +246,10 @@ clearBtn.addEventListener("click", () => {
   searchInput.value = "";
   searchInput.focus();
 });
+clearBtn.addEventListener("focus", () => {
+  searchInput.value = "";
+  searchInput.focus();
+});
 
 /* 서버 연동 테스트용 코드 */
 document.addEventListener("DOMContentLoaded", () => {
